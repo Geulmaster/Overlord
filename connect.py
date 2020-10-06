@@ -12,6 +12,7 @@ def get(url, route: str, prms: dict = None):
     if res.status_code != 200:
         logger.fatal(f"Error getting {route} from server {str(res.status_code)}")
     else:
+        logger.info("Got a response")
         logger.info(f"Successfully got {route} params: " + str(prms) if prms else '')
         return res.content
 
