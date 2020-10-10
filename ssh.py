@@ -21,7 +21,7 @@ class Host():
             print(f'Could not connect to {self.hostname}.')
             raise error
 
-    def execute(self, command):
+    def execute(self, command, PRINT = False):
         if not self.CONNECTED:
             self.connect()
         stdin, stdout, stderr = self.client.exec_command(command)
@@ -32,4 +32,6 @@ class Host():
             attempts += 1
         self.client.close()
         self.CONNECTED = False
-        return output
+        if PRINT:
+            print(output.decode("utf-8"))
+        return output.decode("utf-8")
