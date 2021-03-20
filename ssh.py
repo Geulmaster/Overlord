@@ -35,3 +35,26 @@ class Host():
         if PRINT:
             print(output.decode("utf-8"))
         return output.decode("utf-8")
+
+    def sudo_execute(self, command, PRINT = False):
+        if not self.CONNECTED:
+            self.connect()
+        session = self.client.get_transport().open_session()
+        session.transport.open_session()
+        session.set_combine_stderr(True)
+        session.get_pty()
+        session.exec_command(f"sudo {command}")
+        stdin = session.makefile('wb', -1)
+        stdout = session.makefile('rb', -1)
+        stdin.write(f"{self.password}"+"\n")
+        stdin.flush()
+        attempt = 0
+        outstr = stdout.read()
+        while attempt < 5 and len(outstr) < 1:
+            sleep(3)
+            attempt += 1
+        self.client.close()
+        self.CONNECTED = False
+        if PRINT:
+            print(outstr.decode("utf-8"))
+        return outstr.decode("utf-8")
