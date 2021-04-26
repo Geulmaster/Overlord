@@ -18,6 +18,9 @@ lib/
 lib64/
 parts/
 sdist/
+aws/bin
+aws/lib
+aws/pyvenv.cfg
 var/
 wheels/
 pip-wheel-metadata/
